@@ -11,7 +11,7 @@ services:
         volumes:
             - "./postgres/pgdata:/var/lib/postgresql/data" # persist the data
             - "./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d" # execute sql in here (see https://hub.docker.com/_/postgres)
-    server:
+    postgrest:
         image: postgrest/postgrest
         ports:
             - "3000:3000"
@@ -26,7 +26,7 @@ services:
         depends_on:
             - db
     swagger:
-        build: swagger
+        image: swaggerapi/swagger-ui
         ports:
             - "8080:8080"
         expose:
