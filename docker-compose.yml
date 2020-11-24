@@ -1,0 +1,34 @@
+version: '3' 
+services:
+    db:
+        image: postgres
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: todo_db
+            POSTGRES_USER: todo_user
+            POSTGRES_PASSWORD: todo_password
+        volumes:
+            - "./postgres/pgdata:/var/lib/postgresql/data" # persist the data
+            - "./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d" # execute sql in here (see https://hub.docker.com/_/postgres)
+    server:
+        image: postgrest/postgrest
+        ports:
+            - "3000:3000"
+        links:
+            - db:db
+        environment:
+            PGRST_DB_URI: postgres://authenticator:mysecretpassword@db:5432/todo_db
+            PGRST_DB_SCHEMA: api
+            PGRST_DB_ANON_ROLE: web_anon
+            PGRST_SERVER_PROXY_URI: "http://127.0.0.1:3000"
+        depends_on:
+            - db
+    swagger:
+        image: swaggerapi/swagger-ui
+        ports:
+            - "8080:8080"
+        expose:
+            - "8080"
+        environment:
+            API_URL: http://localhost:3000/
