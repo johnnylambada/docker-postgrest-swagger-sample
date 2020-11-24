@@ -21,11 +21,12 @@ services:
             PGRST_DB_URI: postgres://authenticator:mysecretpassword@db:5432/todo_db
             PGRST_DB_SCHEMA: api
             PGRST_DB_ANON_ROLE: web_anon
+            PGRST_JWT_SECRET: ${TODO_SECRET}
             PGRST_SERVER_PROXY_URI: "http://127.0.0.1:3000"
         depends_on:
             - db
     swagger:
-        image: swaggerapi/swagger-ui
+        build: swagger
         ports:
             - "8080:8080"
         expose:
