@@ -2,6 +2,8 @@ version: '3'
 services:
     cmdline:
         image: alpine
+        environment:
+            TODO_SECRET: ${TODO_SECRET}
     db:
         image: postgres
         expose:
