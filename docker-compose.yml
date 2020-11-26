@@ -10,7 +10,7 @@ services:
             - "5432"
         environment:
             POSTGRES_DB: todo_db
-            POSTGRES_USER: todo_user
+            POSTGRES_USER: todo_admin
             POSTGRES_PASSWORD: todo_password
         volumes:
             - "./postgres/pgdata:/var/lib/postgresql/data" # persist the data
