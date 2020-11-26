@@ -1,9 +1,5 @@
 version: '3' 
 services:
-    cmdline:
-        image: alpine
-        environment:
-            TODO_SECRET: ${TODO_SECRET}
     db:
         image: postgres
         expose:
@@ -19,21 +15,17 @@ services:
         image: postgrest/postgrest
         ports:
             - "3000:3000"
-#        links:
-#            - db:db
         environment:
             PGRST_DB_URI: postgres://authenticator:mysecretpassword@db:5432/todo_db
             PGRST_DB_SCHEMA: api
             PGRST_DB_ANON_ROLE: web_anon
             PGRST_JWT_SECRET: ${TODO_SECRET}
-#            PGRST_SERVER_PROXY_URI: "http://127.0.0.1:3000"
         depends_on:
             - db
     postgrest-proxy:
         depends_on:
             - postgrest
         image: nginx:latest
-#        image: jboesl/docker-nginx-headers-more
         ports:
             - "3001:3001"
         volumes:
